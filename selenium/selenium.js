@@ -3,13 +3,14 @@ require("chromedriver");
 
 module.exports = class SeleniumDriver {
   
-  constructor() {
+  constructor(delay=100) {
     this.driver = new Builder().forBrowser("chrome").build();
+    this.delay = delay;
   }
 
   async handleFunc(callback) {
     try {
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, this.delay));
       await callback();
       return this;
     } catch (err) {
@@ -23,7 +24,7 @@ module.exports = class SeleniumDriver {
     })
   }
 
-  exit(time=10000) {
+  exit(time=100000) {
     setInterval(() => {
       this.driver.quit();
     },time)
@@ -33,6 +34,12 @@ module.exports = class SeleniumDriver {
     return this.handleFunc(() => {
       this.driver.findElement(By[type](value)).sendKeys(text, Key.RETURN);
     })
+  }
+
+  async getTextFromElement(type, value) {
+    const text = await this.driver.findElement(By[type](value)).getText();
+    console.log(text);
+
   }
 
   clickElement(type, value) {

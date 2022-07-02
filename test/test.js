@@ -1,7 +1,8 @@
 // const { By, Key, Builder } = require("selenium-webdriver");
 // require("chromedriver");
 
-const pageURL = "https://google.com";
+const pageURL = "https://www.wykop.pl/tag/famemma/";
+const { By } = require("selenium-webdriver");
 // const textToInput = "Martyna Radomska";
 
 // async function test_case() {
@@ -31,8 +32,10 @@ const client = new SeleniumDriver();
 
 const main = async () => {
   await client.goTo(pageURL);
-  await client.clickElement("className", "sy4vM");
-  await client.searchByInput("name", "q", "Martyna Radomska");
+  await client.clickElement("className", "MuiButton-label");
+  const text = await client.driver.findElement(By.name("tag")).getText();
+  console.log(text);
+  // await client.searchByInput("name", "q", "Martyna Radomska");
   client.exit();
 }
 main();
